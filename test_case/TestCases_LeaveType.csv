@@ -1,0 +1,124 @@
+Test ID,Title,Preconditions,Test Data,Test Steps,Expected Result,Priority,Test Type
+TC-LT-001,"Verify all leave types are displayed correctly in the system","System is configured with default leave types (AL, SL, SP, UL, PL, CL); User is logged in as HR Admin","Leave types: Annual Leave (AL), Sick Leave (SL), Special Leave (SP), Unpaid Leave (UL), Parental Leave (PL), Compassionate Leave (CL)","1. Navigate to Leave Type configuration page
+2. View the list of all leave types","System displays exactly 6 leave types: Annual Leave (AL), Sick Leave (SL), Special Leave (SP), Unpaid Leave (UL), Parental Leave (PL), Compassionate Leave (CL)","P1","Functional"
+TC-LT-002,"Verify Annual Leave (AL) default configuration","System is at default policy configuration; User logged in as HR Admin","Leave Type: Annual Leave (AL); Paid: Yes; Default Entitlement: 12 days/year; Notes: Standard planned vacation","1. Navigate to Leave Type configuration page
+2. Open Annual Leave (AL) details","Annual Leave is configured as: Paid = Yes, Default Entitlement = 12 days/year, Notes = ""Standard planned vacation""","P1","Functional"
+TC-LT-003,"Verify Sick Leave (SL) default configuration","System is at default policy configuration; User logged in as HR Admin","Leave Type: Sick Leave (SL); Paid: Yes; Default Entitlement: 10 days/year; Notes: Medical evidence required for >2 consecutive working days","1. Navigate to Leave Type configuration page
+2. Open Sick Leave (SL) details","Sick Leave is configured as: Paid = Yes, Default Entitlement = 10 days/year, Notes = ""Medical evidence required for >2 consecutive working days""","P1","Functional"
+TC-LT-004,"Verify Special Leave (SP) default configuration","System is at default policy configuration; User logged in as HR Admin","Leave Type: Special Leave (SP); Paid: Yes; Entitlement: Case-based; Notes: Marriage, bereavement, or other approved events","1. Navigate to Leave Type configuration page
+2. Open Special Leave (SP) details","Special Leave is configured as: Paid = Yes, Entitlement = Case-based, Notes = ""Marriage, bereavement, or other approved events""","P1","Functional"
+TC-LT-005,"Verify Unpaid Leave (UL) default configuration","System is at default policy configuration; User logged in as HR Admin","Leave Type: Unpaid Leave (UL); Paid: No; Entitlement: No fixed limit; Notes: Requires HR approval","1. Navigate to Leave Type configuration page
+2. Open Unpaid Leave (UL) details","Unpaid Leave is configured as: Paid = No, Entitlement = No fixed limit, Notes = ""Requires HR approval""","P1","Functional"
+TC-LT-006,"Verify Parental Leave (PL) default configuration","System is at default policy configuration; User logged in as HR Admin","Leave Type: Parental Leave (PL); Paid: Yes; Entitlement: Region-specific; Notes: Subject to local statutory rules","1. Navigate to Leave Type configuration page
+2. Open Parental Leave (PL) details","Parental Leave is configured as: Paid = Yes, Entitlement = Region-specific, Notes = ""Subject to local statutory rules""","P1","Functional"
+TC-LT-007,"Verify Compassionate Leave (CL) default configuration","System is at default policy configuration; User logged in as HR Admin","Leave Type: Compassionate Leave (CL); Paid: Yes; Default Entitlement: 3 days/event; Notes: Death of eligible family member","1. Navigate to Leave Type configuration page
+2. Open Compassionate Leave (CL) details","Compassionate Leave is configured as: Paid = Yes, Default Entitlement = 3 days/event, Notes = ""Death of eligible family member""","P1","Functional"
+TC-LT-008,"Verify Leave Type is a required field when submitting a leave request","Employee is logged in; Employee has available balance; System date is within valid range","Leave Type: (empty); Start Date: 01-Sep-2026; End Date: 02-Sep-2026","1. Navigate to Submit Leave Request page
+2. Leave Leave Type field empty
+3. Fill all other required fields
+4. Click Submit","System displays validation error: ""Leave Type is required"" and request is not submitted","P0","Functional/Negative"
+TC-LT-009,"Verify leave request can be submitted with each valid leave type","Employee is logged in; Employee has sufficient balance for each leave type; System date is within valid range","Leave Types: AL, SL, SP, UL, PL, CL; Start Date: a future date; End Date: 1-2 days after start","1. For each leave type, create a new leave request
+2. Select the leave type
+3. Fill required fields
+4. Click Submit","Each leave request is submitted successfully and enters ""Pending Approval"" status","P1","Functional/Happy Path"
+TC-LT-010,"Verify Annual Leave entitlement differs by region (VN vs SG vs US)","System has Leave Policy 2026.1 active; Employees exist in VN, SG, US regions with Full-time type","Employee (VN): 12 days/year; Employee (SG): 14 days/year; Employee (US): 15 days/year","1. View Annual Leave balance for full-time employee in VN region
+2. View Annual Leave balance for full-time employee in SG region
+3. View Annual Leave balance for full-time employee in US region","VN employee balance = 12 days/year; SG employee balance = 14 days/year; US employee balance = 15 days/year","P1","Functional"
+TC-LT-011,"Verify Annual Leave entitlement for Part-time employee is prorated","System has Leave Policy 2026.1 active; Part-time employee exists in VN region","Employee (VN, Part-time, contracted 3 days/week); Full-time baseline: 12 days","1. View Annual Leave balance for part-time employee in VN region
+2. Calculate expected prorated value (12 * contracted_days / standard_week)","Part-time employee's Annual Leave balance is prorated based on contracted working days (less than 12 days)","P1","Functional"
+TC-LT-012,"Verify Probation employee has 0 available Annual Leave days","System has Leave Policy 2026.1 active; Probation employee exists (e.g., Pham Chi - VN)","Employee: Pham Chi; Region: VN; Type: Probation; Expected: 0 available days","1. View Annual Leave balance for probation employee
+2. Attempt to submit Annual Leave request for probation employee","Probation employee sees 0 available Annual Leave days; Annual Leave request is rejected with reason ""Not eligible during probation""","P1","Functional/Negative"
+TC-LT-013,"Verify Contractor is not eligible for Annual Leave","System has Leave Policy 2026.1 active; Contractor user exists","Employee Type: Contractor; Region: Any","1. View leave types available for Contractor user
+2. Check Annual Leave balance for Contractor","Annual Leave is not available/visible to Contractor; balance = 0 or N/A","P1","Functional/Negative"
+TC-LT-014,"Verify Sick Leave requires attachment when duration >2 consecutive working days","Employee is logged in; Employee has Sick Leave balance","Leave Type: Sick Leave; Duration: 3 consecutive working days; Attachment: not provided","1. Submit Sick Leave request for 3 consecutive working days
+2. Leave attachment field empty
+3. Click Submit","System displays validation error that attachment/medical evidence is required for Sick Leave longer than 2 consecutive working days","P1","Functional/Negative"
+TC-LT-015,"Verify Sick Leave can be submitted without attachment when duration <=2 consecutive working days","Employee is logged in; Employee has Sick Leave balance","Leave Type: Sick Leave; Duration: 1-2 consecutive working days; Attachment: not provided","1. Submit Sick Leave request for 1-2 consecutive working days
+2. Leave attachment field empty
+3. Click Submit","Sick Leave request is submitted successfully without requiring attachment","P2","Functional"
+TC-LT-016,"Verify Reason is required for Special Leave (SP)","Employee is logged in; Employee is eligible for Special Leave","Leave Type: Special Leave (SP); Reason: (empty); Entitlement: Case-based","1. Submit Special Leave request
+2. Leave Reason field empty
+3. Click Submit","System displays validation error that Reason is required for Special Leave","P1","Functional/Negative"
+TC-LT-017,"Verify Reason is required for Unpaid Leave (UL)","Employee is logged in","Leave Type: Unpaid Leave (UL); Reason: (empty)","1. Submit Unpaid Leave request
+2. Leave Reason field empty
+3. Click Submit","System displays validation error that Reason is required for Unpaid Leave","P1","Functional/Negative"
+TC-LT-018,"Verify Reason is not required for Annual Leave (AL)","Employee is logged in; Employee has AL balance","Leave Type: Annual Leave (AL); Reason: (empty)","1. Submit Annual Leave request
+2. Leave Reason field empty
+3. Click Submit","Annual Leave request is submitted successfully without Reason","P2","Functional"
+TC-LT-019,"Verify Special Leave - Marriage entitlement (3 working days)","Employee is logged in; Marriage event scenario","Leave Type: Special Leave (SP); Scenario: Employee's own marriage; Expected: 3 working days","1. Submit Special Leave request with reason ""Marriage""
+2. Enter duration of 3 working days","System accepts the request; Entitlement matches policy: 3 working days for marriage","P2","Functional"
+TC-LT-020,"Verify Special Leave - Death of parent/spouse/child (3 working days)","Employee is logged in; Bereavement scenario","Leave Type: Special Leave (SP); Scenario: Death of parent/spouse/child; Expected: 3 working days","1. Submit Special Leave request with reason ""Death of parent""
+2. Enter duration of 3 working days","System accepts the request; Entitlement matches policy: 3 working days for death of parent/spouse/child","P2","Functional"
+TC-LT-021,"Verify Special Leave - Death of sibling (1 working day)","Employee is logged in; Bereavement scenario","Leave Type: Special Leave (SP); Scenario: Death of sibling; Expected: 1 working day","1. Submit Special Leave request with reason ""Death of sibling""
+2. Enter duration of 1 working day","System accepts the request; Entitlement matches policy: 1 working day for death of sibling","P2","Functional"
+TC-LT-022,"Verify Special Leave is NOT deducted from Annual Leave balance","Employee is logged in; Employee has both AL and SP balance","Leave Type: Special Leave (SP); Duration: 2 working days","1. Check current Annual Leave balance
+2. Submit and get approval for Special Leave request
+3. Check Annual Leave balance again after approval","Annual Leave balance remains unchanged after Special Leave is approved (Special Leave is a separate leave type)","P1","Functional/Data Integrity"
+TC-LT-023,"Verify leave request cannot overlap with another approved or pending request","Employee is logged in; Employee has an existing approved/pending leave request (e.g., LR-1001: Nguyen An, 10-12 Mar 2026)","Existing Request: LR-1001, 10-12 Mar 2026; New Request: Annual Leave, 11-13 Mar 2026","1. Submit a new leave request with dates overlapping existing approved/pending request
+2. Click Submit","System rejects the overlapping request with validation error: ""Request cannot overlap another approved or pending request""","P0","Functional/Negative"
+TC-LT-024,"Verify leave request duration must not exceed available balance","Employee is logged in; Employee has limited balance (e.g., 5 days AL remaining)","Leave Type: Annual Leave; Available Balance: 5 days; Requested: 6 days","1. Submit Annual Leave request with duration exceeding available balance
+2. Click Submit","System rejects the request with error: ""Requested duration exceeds available balance"" (unless leave type explicitly allows it)","P0","Functional/Negative"
+TC-LT-025,"Verify Unpaid Leave has no fixed entitlement limit","Employee is logged in","Leave Type: Unpaid Leave (UL); Duration: any reasonable number of days","1. Check Unpaid Leave configuration
+2. Submit Unpaid Leave request","Unpaid Leave has no fixed entitlement limit (case-based, requires HR approval)","P2","Functional"
+TC-LT-026,"Verify Annual Leave requires at least 1 calendar day lead time before start date","Employee is logged in; Current date: 25-Aug-2026","Leave Type: Annual Leave; Start Date: 25-Aug-2026 (same day); Rule: must be >=1 calendar day before start","1. Submit Annual Leave request with start date = today (0 days lead time)","System rejects the request with error: ""Annual Leave requests must be submitted at least 1 calendar day before the start date""","P1","Functional/Negative"
+TC-LT-027,"Verify Annual Leave with exactly 1 calendar day lead time is accepted","Employee is logged in; Current date: 25-Aug-2026","Leave Type: Annual Leave; Start Date: 26-Aug-2026 (1 day lead time)","1. Submit Annual Leave request with start date = tomorrow (1 calendar day lead time)","System accepts the Annual Leave request","P1","Functional/Boundary"
+TC-LT-028,"Verify Sick Leave can be submitted after the start date","Employee is logged in; Current date: 25-Aug-2026; Employee was unable to submit earlier","Leave Type: Sick Leave; Start Date: 24-Aug-2026 (past date); Reason: unable to submit earlier","1. Submit Sick Leave request with start date in the past
+2. Provide explanation that employee was unable to submit earlier
+3. Click Submit","System accepts the Sick Leave request even though start date is in the past, per policy","P1","Functional"
+TC-LT-029,"Verify leave request for entirely past dates is rejected (except Sick Leave exception)","Employee is logged in; Current date: 25-Aug-2026","Leave Type: Annual Leave; Start Date: 20-Aug-2026; End Date: 22-Aug-2026 (entirely in the past)","1. Submit Annual Leave request with dates entirely in the past
+2. Click Submit","System rejects the request with error: ""Cannot submit a request for dates that are entirely in the past""","P1","Functional/Negative"
+TC-LT-030,"Verify carry-over of unused Annual Leave (max 5 days)","Employee has unused Annual Leave from previous year; System is at year-end","Previous year unused AL: 8 days; Carry-over max: 5 days","1. Process year-end carry-over for employee
+2. Check carried-over balance","Only 5 days (maximum) are carried to the next year; remaining 3 days expire","P1","Functional"
+TC-LT-031,"Verify carried-over days expire on 31 Mar of the following year","Employee has carried-over days; Current date: 31-Mar-2026","Carry-over from 2025: 5 days; Expiry date: 31-Mar-2026","1. Check carried-over balance on 31-Mar-2026 (before expiry)
+2. Check carried-over balance on 01-Apr-2026 (after expiry)","Carried-over balance is available on 31-Mar-2026; Balance becomes 0 on 01-Apr-2026","P1","Functional/Boundary"
+TC-LT-032,"Verify no carry-over is created during probation","Probation employee has unused Annual Leave; Year-end processing","Employee: Probation; Unused AL: 0 or N/A (no entitlement during probation)","1. Process year-end carry-over for probation employee
+2. Check carry-over result","No carry-over is created for the probation employee","P2","Functional"
+TC-LT-033,"Verify HR Admin can configure Leave Type policy","User is logged in as HR Admin","Role: HR Admin; Permission: Configure Policy = Yes","1. Navigate to Leave Type configuration
+2. Edit an existing leave type (e.g., change entitlement or add notes)
+3. Save changes","HR Admin can successfully modify and save Leave Type configuration","P1","Functional/Permission"
+TC-LT-034,"Verify Employee cannot configure Leave Type policy","User is logged in as Employee","Role: Employee; Permission: Configure Policy = No","1. Navigate to system settings/configuration
+2. Look for Leave Type configuration option","Employee cannot see or access Leave Type configuration options","P1","Functional/Permission"
+TC-LT-035,"Verify Manager cannot configure Leave Type policy","User is logged in as Manager","Role: Manager; Permission: Configure Policy = No","1. Navigate to system settings/configuration
+2. Look for Leave Type configuration option","Manager cannot see or access Leave Type configuration options","P1","Functional/Permission"
+TC-LT-036,"Verify System Admin has limited technical access to Leave Type configuration","User is logged in as System Admin","Role: System Admin; Permission: Configure Policy = Yes (technical only)","1. Navigate to Leave Type configuration
+2. Attempt to approve a leave request","System Admin can access technical configuration but cannot perform business approval actions","P2","Functional/Permission"
+TC-LT-037,"Verify Parental Leave is region-specific","System has Leave Policy 2026.1; Employees in VN, SG, US regions","Leave Type: Parental Leave (PL); Rule: Region-specific, subject to local statutory rules","1. View Parental Leave entitlement for VN employee
+2. View Parental Leave entitlement for SG employee
+3. View Parental Leave entitlement for US employee","Parental Leave entitlement varies by region according to local statutory rules","P2","Functional"
+TC-LT-038,"Verify duration calculation excludes weekends and public holidays","Employee is logged in; Employee has sufficient balance; Holiday calendar is configured for VN region","Leave Type: Annual Leave; Start: Mon 01-Sep-2026; End: Fri 05-Sep-2026 (5 calendar days, no holidays); VN region","1. Submit leave request from Mon to Fri (5 calendar days)
+2. View calculated duration","System calculates duration as 5 working days (weekends excluded)","P1","Functional"
+TC-LT-039,"Verify duration calculation excludes configured public holidays","Employee is logged in; Employee has sufficient balance; VN holiday calendar includes 02-Sep-2026","Leave Type: Annual Leave; Start: Mon 01-Sep-2026; End: Fri 04-Sep-2026; VN region (02-Sep is holiday)","1. Submit leave request from 01-Sep to 04-Sep (calendar days)
+2. View calculated duration","System correctly excludes 02-Sep (public holiday) from the working-day duration calculation","P1","Functional"
+TC-LT-040,"Verify Leave Type code uniqueness (duplicate code rejected)","HR Admin is logged in; Leave Type with code ""AL"" already exists","New Leave Type: Code = AL, Name = ""Annual Leave 2""","1. Navigate to Create Leave Type
+2. Enter Code ""AL"" (already exists)
+3. Fill other fields
+4. Click Save","System rejects with error: ""Leave Type code must be unique""","P1","Functional/Negative"
+TC-LT-041,"Verify Leave Type must be active to be available for employee selection","HR Admin is logged in; A leave type exists and is inactive","Leave Type: Annual Leave (AL); Status: Inactive","1. Log in as Employee
+2. Navigate to Submit Leave Request
+3. Check available Leave Type dropdown","Inactive leave types are not shown in the Leave Type dropdown for employees","P1","Functional"
+TC-LT-042,"Verify HR Admin exception for carry-over requires audit reason","HR Admin is logged in; Employee has used >5 carry-over days","HR Exception: Grant carry-over of 7 days (exceeds max 5); Reason: (initially empty)","1. Navigate to HR Exception for carry-over
+2. Enter carry-over amount >5 without providing a reason
+3. Attempt to save","System requires an audit reason when granting an HR exception for carry-over","P1","Functional/Negative"
+TC-LT-043,"Verify Leave Type field shows only leave types available to the employee's category","Employee is logged in; System configured with multiple leave types","Employee Category: varies (Full-time, Part-time, Probation, Contractor)","1. Log in as different employee types
+2. Navigate to Submit Leave Request
+3. Check available Leave Type options","Each employee category sees only the leave types they are eligible for (e.g., Contractor does not see AL)","P2","Functional"
+TC-LT-044,"Verify compassionate leave entitlement (3 days/event for death of eligible family member)","Employee is logged in; Bereavement scenario","Leave Type: Compassionate Leave (CL); Scenario: Death of eligible family member; Expected: 3 days/event","1. Submit Compassionate Leave request
+2. Enter duration of 3 working days
+3. Provide supporting event details","System accepts the request for 3 working days per event","P2","Functional"
+TC-LT-045,"Verify Leave Type configuration changes are audited","HR Admin is logged in; Leave Type exists","Action: Modify Annual Leave entitlement from 12 to 15 days; Actor: HR Admin","1. Change Annual Leave entitlement value
+2. Save changes
+3. Navigate to Audit Log
+4. Search for the change event","Audit log records: timestamp, actor (HR Admin), action (modify leave type), previous value (12), new value (15), and reason","P1","Functional/Data Integrity"
+TC-LT-046,"Verify leave request is rejected if leave type is deactivated after submission but before approval","Employee submits request; HR Admin deactivates the leave type while request is Pending","Leave Type: Deactivated after submission; Status: Pending Approval","1. Employee submits leave request with active leave type
+2. HR Admin deactivates the leave type
+3. Manager attempts to approve the pending request","System handles the scenario appropriately (either prevents approval or flags the request)","P2","Functional/Edge Case"
+TC-LT-047,"Verify Employee can view own leave history including leave type details","Employee is logged in; Employee has past leave requests","Employee: Any; Permission: View Own Leave = Yes, Audit = Own history","1. Navigate to Leave History
+2. View past requests
+3. Check leave type information for each request","Employee can view their own leave history with leave type details for each request","P2","Functional"
+TC-LT-048,"Verify HR Admin can view all audit records for leave type changes but cannot delete them","HR Admin is logged in; Leave Type changes have been made","Role: HR Admin; Permission: View All Audit Records = Yes, Delete = No","1. Navigate to Audit Log
+2. View leave type audit records
+3. Attempt to delete an audit record","HR Admin can view all audit records but cannot delete any audit records","P2","Functional/Permission"
+TC-LT-049,"Verify Unpaid Leave requires HR approval","Employee is logged in; Employee submits Unpaid Leave request","Leave Type: Unpaid Leave (UL); Rule: Requires HR approval","1. Employee submits Unpaid Leave request
+2. Check routing/approval flow","Unpaid Leave request is routed to HR Admin for approval (not just direct manager)","P1","Functional"
+TC-LT-050,"Verify Leave Type configuration for previous policy version (Leave Policy 2025.3)","System retains historical policy configuration; User queries historical period","Policy: Leave Policy 2025.3 (effective 01 Jul 2025); VN Annual Leave: 12 days","1. View Leave Type configuration effective for Leave Policy 2025.3
+2. Compare with current policy 2026.1","Historical policy data is preserved and retrievable; VN baseline = 12 days for both versions","P2","Functional/Data Integrity"
